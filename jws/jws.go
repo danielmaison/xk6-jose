@@ -1,6 +1,8 @@
 package jws
 
 import (
+	"bytes"
+	"compress/gzip"
 	"context"
 	"gopkg.in/square/go-jose.v2"
 )
@@ -20,6 +22,27 @@ func (m *Module) Sign(ctx context.Context, key *jose.JSONWebKey, payload string,
 		return "", err
 	}
 	return obj.CompactSerialize()
+
+}
+
+func (m *Module) GzipAndSign(ctx context.Context, key *jose.JSONWebKey, payload string, sigAlg jose.SignatureAlgorithm) (string, error) {
+	var b bytes.Buffer
+	gz := gzip.NewWriter(&b)
+	if _, err := gz.Write([]byte(payload)); err != nil {
+		return "", err
+	}
+	if err := gz.Close(); err != nil {
+		return "", err
+	}
+	signer, err := jose.NewSigner(jose.SigningKey{Algorithm: sigAlg, Key: key}, nil)
+	if err != nil {
+		return "", err
+	}
+	obj, err := signer.Sign(b.Bytes())
+	if err != nil {
+		return "", err
+	}
+	return obj.CompactSerialize()
 }
 
 func (m *Module) Verify(ctx context.Context, key *jose.JSONWebKey, jws string) (string, error) {
@@ -29,4 +52,23 @@ func (m *Module) Verify(ctx context.Context, key *jose.JSONWebKey, jws string) (
 	}
 	plaintextBytes, err := obj.Verify(key)
 	return string(plaintextBytes), err
+}
+
+func (m *Module) VerifyGzipped(ctx context.Context, key *jose.JSONWebKey, jws string) (string, error) {
+	obj, err := jose.ParseSigned(jws)
+	if err != nil {
+		return "", err
+	}
+	plaintextBytes, err := obj.Verify(key)
+	if err != nil {
+		return "", err
+	}
+	reader, err := gzip.NewReader(bytes.NewReader(plaintextBytes))
+	defer reader.Close()
+	buf := &bytes.Buffer{}
+	_, err = buf.ReadFrom(reader)
+	if err != nil {
+		return "", err
+	}
+	return buf.String(), err
 }

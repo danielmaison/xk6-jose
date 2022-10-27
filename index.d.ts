@@ -132,6 +132,15 @@ export namespace jws {
    */
   function sign(key: jwk.Key, payload: string, sigAlg: string): string
 
+  /**
+   * Gzip Payload and create JSON Web Signature in compact serialization.
+   * @param key The signature key
+   * @param payload The string payload to sign
+   * @param sigAlg The signature algorithm, supported values: See [JWA RFC chapter 3](https://www.rfc-editor.org/rfc/rfc7518#section-3.1) for details on supported algorithms
+   * @return JSON Web Signature in compact serialization
+   */
+  function gzipAndSign(key: jwk.Key, payload: string, sigAlg: string): string
+
 
   /**
    * Verify JWS and return decoded payload as string
@@ -140,4 +149,12 @@ export namespace jws {
    * @return decoded payload as string
    */
   function verify(key: jwk.Key, jws: string): string
+
+  /**
+   * Verify JWS and gunzip the payload, return decoded payload as string
+   * @param key The verification key
+   * @param jws JSON Web Signature
+   * @return decoded payload as string
+   */
+  function verifyGzipped(key: jwk.Key, jws: string): string
 }
