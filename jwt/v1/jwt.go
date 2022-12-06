@@ -24,6 +24,7 @@ package jwt
 
 import (
 	"github.com/szkiba/xk6-jose/jwt/internals"
+	"gopkg.in/square/go-jose.v2"
 )
 
 type Module struct{}

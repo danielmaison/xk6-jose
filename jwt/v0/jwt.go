@@ -24,6 +24,7 @@ package jwt
 
 import (
 	"context"
+	"gopkg.in/square/go-jose.v2"
 
 	"github.com/szkiba/xk6-jose/jwt/internals"
 )

@@ -25,7 +25,7 @@
 export { options } from "./expect.js";
 
 import jwe from "k6/x/jose/jwe";
-import jwk from "k6/x/jose/jwk";
+import jwk from "k6/x/jose/jwk/v1";
 import { describe } from "./expect.js";
 import encoding from 'k6/encoding';
 

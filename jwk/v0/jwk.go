@@ -30,6 +30,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"gopkg.in/square/go-jose.v2"
 	"reflect"
 	"strings"
 

@@ -24,6 +24,7 @@ package v1
 
 import (
 	"github.com/szkiba/xk6-jose/jwk/internals"
+	"gopkg.in/square/go-jose.v2"
 )
 
 type Module struct{}

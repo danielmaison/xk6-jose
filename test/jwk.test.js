@@ -30,7 +30,7 @@ import { b64encode } from "k6/encoding";
 import { randomBytes } from "k6/crypto";
 import { group } from "k6";
 
-import jwk from "k6/x/jose/jwk";
+import jwk from "k6/x/jose/jwk/v1";
 import xcrypto from "k6/x/crypto";
 
 const ALG = "ed25519";

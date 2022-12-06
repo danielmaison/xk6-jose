@@ -25,7 +25,7 @@
 export { options } from "./expect.js";
 
 import jws from "k6/x/jose/jws";
-import jwk from "k6/x/jose/jwk";
+import jwk from "k6/x/jose/jwk/v1";
 import { describe } from "./expect.js";
 
 const ecKey = `
